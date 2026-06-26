@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JYS마케팅 — 중소기업·소상공인 전문 마케팅 파트너</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700&family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F6F1E8;
+    --paper-dim:#EDE6D8;
+    --ink:#1F2A37;
+    --ink-soft:#4B5566;
+    --line:#D8CDB8;
+    --accent:#C8602F;
+    --accent-deep:#A84B22;
+    --card:#FFFCF6;
+    --serif: "Noto Serif KR", serif;
+    --sans: "Pretendard", -apple-system, "Apple SD Gothic Neo", sans-serif;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%;display:block;}
+  a{color:inherit;text-decoration:none;}
+  ul{margin:0;padding:0;list-style:none;}
+
+  .wrap{max-width:1120px;margin:0 auto;padding:0 28px;}
+
+  /* ---------- Header / Nav ---------- */
+  .topbar{
+    border-bottom:1px solid var(--line);
+    background:var(--paper);
+    position:sticky;top:0;z-index:50;
+  }
+  .topbar-inner{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 28px;max-width:1120px;margin:0 auto;
+  }
+  .brand{
+    font-family:var(--serif);font-weight:700;font-size:1.15rem;letter-spacing:0.01em;
+  }
+  .topnav{display:flex;gap:28px;font-size:0.92rem;color:var(--ink-soft);}
+  .topnav a:hover{color:var(--accent-deep);}
+  .topbar-meta{font-size:0.78rem;color:var(--ink-soft);display:flex;gap:14px;align-items:center;}
+  .btn-cta-sm{
+    background:var(--ink);color:var(--paper);
+    padding:8px 16px;border-radius:3px;font-size:0.85rem;font-weight:600;
+    white-space:nowrap;
+  }
+  .btn-cta-sm:hover{background:var(--accent-deep);}
+  .topbar-strip{
+    font-size:0.74rem;color:var(--ink-soft);text-align:center;
+    border-bottom:1px solid var(--line);padding:6px 0;letter-spacing:0.02em;
+  }
+
+  /* ---------- Hero (시안 B 분할형) ---------- */
+  .hero{
+    display:grid;grid-template-columns:1.15fr 0.85fr;
+    align-items:stretch;
+    border-bottom:1px solid var(--line);
+    min-height:560px;
+  }
+  .hero-left{
+    padding:64px 28px 64px clamp(28px, 6vw, 80px);
+    display:flex;flex-direction:column;justify-content:center;
+    max-width:560px;
+  }
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:0.82rem;color:var(--accent-deep);font-weight:600;
+    margin-bottom:22px;letter-spacing:0.01em;
+  }
+  .eyebrow::before{
+    content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block;
+  }
+  .hero-title{
+    font-family:var(--serif);font-weight:700;
+    font-size:clamp(2.4rem, 4.6vw, 3.6rem);
+    line-height:1.18;color:var(--ink);margin:0 0 26px;
+    letter-spacing:-0.01em;
+  }
+  .hero-title em{
+    font-style:normal;color:var(--accent-deep);
+    background:linear-gradient(transparent 62%, rgba(200,96,47,0.18) 62%);
+  }
+  .hero-desc{
+    font-size:1.04rem;line-height:1.7;color:var(--ink-soft);margin:0 0 36px;
+    max-width:460px;
+  }
+  .hero-actions{display:flex;gap:14px;flex-wrap:wrap;}
+  .btn-primary{
+    background:var(--ink);color:var(--paper);
+    padding:15px 26px;border-radius:3px;font-weight:600;font-size:0.96rem;
+    display:inline-flex;align-items:center;gap:8px;
+    transition:background .15s ease;
+  }
+  .btn-primary:hover{background:var(--accent-deep);}
+  .btn-ghost{
+    border:1px solid var(--ink);color:var(--ink);
+    padding:15px 26px;border-radius:3px;font-weight:600;font-size:0.96rem;
+    transition:border-color .15s ease, color .15s ease;
+  }
+  .btn-ghost:hover{border-color:var(--accent-deep);color:var(--accent-deep);}
+
+  .hero-right{
+    background:var(--ink);position:relative;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+    padding:40px;
+  }
+  .hero-right::before{
+    content:"";position:absolute;inset:0;
+    background-image:
+      repeating-linear-gradient(0deg, rgba(246,241,232,0.05) 0 1px, transparent 1px 32px),
+      repeating-linear-gradient(90deg, rgba(246,241,232,0.05) 0 1px, transparent 1px 32px);
+  }
+  .ledger-card{
+    position:relative;z-index:1;
+    background:var(--card);color:var(--ink);
+    width:100%;max-width:340px;
+    padding:30px 28px;border-radius:2px;
+    box-shadow:0 18px 50px rgba(0,0,0,0.35);
+    transform:rotate(-1.4deg);
+  }
+  .ledger-card .ledger-title{
+    font-family:var(--serif);font-weight:600;font-size:0.95rem;
+    color:var(--accent-deep);margin-bottom:14px;
+  }
+  .ledger-row{
+    display:flex;justify-content:space-between;align-items:baseline;
+    padding:9px 0;border-bottom:1px dashed var(--line);font-size:0.88rem;
+  }
+  .ledger-row:last-child{border-bottom:none;}
+  .ledger-row .v{font-weight:700;color:var(--ink);}
+  .ledger-note{
+    margin-top:16px;font-size:0.76rem;color:var(--ink-soft);
+    font-style:italic;line-height:1.5;
+  }
+
+  /* ---------- Section shell ---------- */
+  section{padding:96px 0;}
+  .section-head{max-width:640px;margin:0 0 56px;}
+  .label-eyebrow{
+    font-size:0.8rem;color:var(--accent-deep);font-weight:700;letter-spacing:0.06em;
+    text-transform:uppercase;margin-bottom:14px;display:block;
+  }
+  .section-title{
+    font-family:var(--serif);font-weight:700;font-size:clamp(1.7rem,2.6vw,2.3rem);
+    line-height:1.3;margin:0 0 14px;color:var(--ink);
+  }
+  .section-desc{font-size:1rem;color:var(--ink-soft);line-height:1.7;margin:0;}
+
+  .alt-bg{background:var(--paper-dim);}
+
+  /* ---------- Services ---------- */
+  .services-grid{
+    display:grid;grid-template-columns:repeat(2,1fr);gap:1px;
+    background:var(--line);border:1px solid var(--line);
+  }
+  .service-card{
+    background:var(--card);padding:34px 32px;position:relative;
+  }
+  .service-tag{
+    font-family:var(--serif);font-size:0.78rem;color:var(--ink-soft);
+    margin-bottom:18px;display:block;
+  }
+  .service-card h3{
+    font-family:var(--serif);font-size:1.18rem;margin:0 0 12px;color:var(--ink);
+  }
+  .service-card p{font-size:0.92rem;color:var(--ink-soft);line-height:1.65;margin:0;}
+
+  /* ---------- Why JYS ---------- */
+  .why-list{display:grid;grid-template-columns:repeat(2,1fr);gap:36px 48px;}
+  .why-item{display:flex;gap:18px;align-items:flex-start;}
+  .why-mark{
+    font-family:var(--serif);font-weight:700;color:var(--accent);
+    font-size:1.5rem;line-height:1;flex-shrink:0;width:34px;
+  }
+  .why-item h4{font-size:1.02rem;margin:2px 0 8px;color:var(--ink);}
+  .why-item p{font-size:0.9rem;color:var(--ink-soft);line-height:1.6;margin:0;}
+
+  /* ---------- Pricing ---------- */
+  .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .price-card{
+    background:var(--card);border:1px solid var(--line);border-radius:3px;
+    padding:34px 28px;position:relative;display:flex;flex-direction:column;
+  }
+  .price-card.featured{
+    border-color:var(--accent-deep);
+    box-shadow:0 14px 32px rgba(168,75,34,0.14);
+  }
+  .price-badge{
+    position:absolute;top:-13px;left:28px;
+    background:var(--accent-deep);color:var(--paper);
+    font-size:0.72rem;font-weight:700;padding:4px 12px;border-radius:2px;
+    letter-spacing:0.02em;
+  }
+  .price-name{font-family:var(--serif);font-size:1.1rem;color:var(--ink);margin:6px 0 6px;}
+  .price-amount{font-size:1.7rem;font-weight:700;color:var(--ink);margin:0 0 4px;}
+  .price-amount span{font-size:0.85rem;font-weight:500;color:var(--ink-soft);}
+  .price-sub{font-size:0.84rem;color:var(--ink-soft);margin:0 0 22px;}
+  .price-feats{margin:0 0 26px;flex-grow:1;}
+  .price-feats li{
+    font-size:0.88rem;color:var(--ink-soft);padding:8px 0;
+    border-top:1px solid var(--line);display:flex;gap:8px;
+  }
+  .price-feats li:first-child{border-top:none;}
+  .price-feats li::before{content:"·";color:var(--accent);font-weight:700;}
+  .price-cta{
+    text-align:center;padding:12px;border:1px solid var(--ink);border-radius:3px;
+    font-weight:600;font-size:0.92rem;
+  }
+  .price-card.featured .price-cta{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .price-cta:hover{background:var(--accent-deep);color:var(--paper);border-color:var(--accent-deep);}
+  .pricing-foot{font-size:0.82rem;color:var(--ink-soft);margin-top:24px;}
+
+  /* ---------- Reviews ---------- */
+  .review-disclaimer{font-size:0.8rem;color:var(--ink-soft);font-style:italic;margin-top:-36px;margin-bottom:40px;}
+  .reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .review-card{
+    background:var(--card);border:1px solid var(--line);border-radius:3px;
+    padding:28px 26px;
+  }
+  .review-quote{
+    font-family:var(--serif);font-size:0.98rem;line-height:1.7;color:var(--ink);
+    margin:0 0 20px;
+  }
+  .review-who{font-size:0.84rem;color:var(--ink-soft);border-top:1px solid var(--line);padding-top:14px;}
+  .review-who b{color:var(--ink);}
+
+  /* ---------- Contact ---------- */
+  .contact-grid{display:grid;grid-template-columns:0.9fr 1.1fr;gap:56px;align-items:flex-start;}
+  .contact-meta{display:flex;flex-direction:column;gap:18px;margin-top:28px;}
+  .contact-meta-row{display:flex;gap:14px;font-size:0.9rem;}
+  .contact-meta-row .k{color:var(--accent-deep);font-weight:600;width:74px;flex-shrink:0;}
+  .contact-meta-row .v{color:var(--ink-soft);}
+
+  .form-card{
+    background:var(--card);border:1px solid var(--line);border-radius:3px;padding:32px;
+  }
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+  .field label{font-size:0.84rem;color:var(--ink-soft);display:block;margin-bottom:6px;}
+  .field input, .field select, .field textarea{
+    width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:3px;
+    background:var(--paper);font-family:var(--sans);font-size:0.92rem;color:var(--ink);
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{
+    outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent);
+  }
+  .field-full{margin-bottom:16px;}
+  .field textarea{resize:vertical;min-height:96px;}
+  .form-submit{
+    width:100%;background:var(--ink);color:var(--paper);border:none;
+    padding:14px;border-radius:3px;font-weight:700;font-size:0.96rem;cursor:pointer;
+    margin-top:6px;
+  }
+  .form-submit:hover{background:var(--accent-deep);}
+
+  /* ---------- Footer ---------- */
+  footer{background:var(--ink);color:var(--paper-dim);padding:60px 0 28px;}
+  .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;margin-bottom:40px;}
+  .footer-brand{font-family:var(--serif);font-weight:700;font-size:1.1rem;color:var(--paper);margin-bottom:12px;}
+  .footer-desc{font-size:0.86rem;line-height:1.7;color:#A9AFB9;max-width:320px;}
+  .footer-col h5{font-size:0.82rem;color:var(--paper);margin:0 0 14px;letter-spacing:0.02em;}
+  .footer-col li{font-size:0.85rem;color:#A9AFB9;padding:6px 0;}
+  .footer-bottom{
+    border-top:1px solid rgba(246,241,232,0.12);padding-top:20px;
+    font-size:0.76rem;color:#828A96;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 860px){
+    .hero{grid-template-columns:1fr;min-height:auto;}
+    .hero-right{padding:36px 24px 56px;}
+    .hero-left{padding:56px 24px 40px;max-width:none;}
+    .topnav{display:none;}
+    .services-grid, .why-list, .pricing-grid, .reviews-grid{grid-template-columns:1fr;}
+    .contact-grid{grid-template-columns:1fr;}
+    .form-row{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr;gap:28px;}
+    section{padding:64px 0;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-strip wrap">중소기업·소상공인 전문 마케팅 · 평일 09:00–18:00 상담</div>
+  <div class="topbar-inner">
+    <div class="brand">JYS마케팅</div>
+    <nav class="topnav">
+      <a href="#services">서비스</a>
+      <a href="#why">차별점</a>
+      <a href="#pricing">요금</a>
+      <a href="#reviews">후기</a>
+    </nav>
+    <a href="#contact" class="btn-cta-sm">서비스 문의하기</a>
+  </div>
+</div>
+
+<section class="hero" style="padding:0;">
+  <div class="hero-left">
+    <span class="eyebrow">중소기업 · 소상공인 전문</span>
+    <h1 class="hero-title">든든한<br>마케팅<br><em>파트너</em></h1>
+    <p class="hero-desc">
+      대형 대행사처럼 거리감 있지 않게. 옆에서 같이 고민하는 마케팅 파트너가
+      SNS 운영부터 콘텐츠까지 함께합니다.
+    </p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">서비스 문의하기</a>
+      <a href="#services" class="btn-ghost">서비스 보기</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="ledger-card">
+      <div class="ledger-title">이번 달 운영 장부 · 예시</div>
+      <div class="ledger-row"><span>SNS 채널 운영</span><span class="v">2채널</span></div>
+      <div class="ledger-row"><span>콘텐츠 제작</span><span class="v">월 16건</span></div>
+      <div class="ledger-row"><span>숏폼 영상</span><span class="v">4건</span></div>
+      <div class="ledger-row"><span>성과 리포트</span><span class="v">월간 발행</span></div>
+      <div class="ledger-note">* 그로스 플랜 기준 예시이며, 업종·범위에 따라 조정됩니다.</div>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="label-eyebrow">Services</span>
+      <h2 class="section-title">핵심 서비스 4가지</h2>
+      <p class="section-desc">기획부터 제작, 성과 분석까지. SNS·콘텐츠 운영의 전 과정을 한 곳에서 책임집니다.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <span class="service-tag">channel ops</span>
+        <h3>SNS 채널 운영 대행</h3>
+        <p>인스타그램·네이버 블로그·유튜브 쇼츠 등 주요 채널의 기획과 운영, 톤앤매너·콘텐츠 캘린더 수립까지 책임집니다.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-tag">content</span>
+        <h3>콘텐츠 제작</h3>
+        <p>카드뉴스·숏폼 영상·상세페이지 콘텐츠를 기획하고 제작합니다. 브랜드 스토리 기반 카피라이팅을 포함합니다.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-tag">analytics</span>
+        <h3>성과 분석 &amp; 전략 리포트</h3>
+        <p>채널 인사이트 기반 월간 리포트를 제공하고, 콘텐츠 반응 데이터로 다음 달 전략을 수립합니다.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-tag">package</span>
+        <h3>소상공인 맞춤 패키지</h3>
+        <p>적은 예산으로 시작하는 단계별 플랜. 외식업·뷰티·리테일 등 업종별 맞춤 전략을 제공합니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="why" class="alt-bg">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="label-eyebrow">Why JYS</span>
+      <h2 class="section-title">왜 JYS마케팅인가</h2>
+    </div>
+    <div class="why-list">
+      <div class="why-item">
+        <span class="why-mark">01</span>
+        <div><h4>중소기업·소상공인 전문성</h4><p>대형 브랜드 중심이 아닌, 한정된 예산과 인력 환경을 이해하는 맞춤형 접근.</p></div>
+      </div>
+      <div class="why-item">
+        <span class="why-mark">02</span>
+        <div><h4>합리적인 비용 구조</h4><p>투입 대비 효과를 중시하는 실속형 패키지로, 작은 예산에서도 시작할 수 있습니다.</p></div>
+      </div>
+      <div class="why-item">
+        <span class="why-mark">03</span>
+        <div><h4>데이터 기반 콘텐츠 전략</h4><p>감에 의존하지 않고 채널 데이터와 트렌드를 분석해 콘텐츠 방향을 제시합니다.</p></div>
+      </div>
+      <div class="why-item">
+        <span class="why-mark">04</span>
+        <div><h4>빠른 실행력</h4><p>소상공인 특성에 맞는 신속한 의사결정과 콘텐츠 제작 사이클로 빠르게 반응합니다.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="label-eyebrow">Pricing</span>
+      <h2 class="section-title">합리적인 요금 안내</h2>
+      <p class="section-desc">단계별로 시작하고, 성장에 맞춰 확장하세요. 제안가 기준이며 업종·범위에 따라 조정됩니다.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <p class="price-name">베이직</p>
+        <p class="price-amount">69만원<span>~ / 월</span></p>
+        <p class="price-sub">처음 시작하는 1인·소상공인</p>
+        <ul class="price-feats">
+          <li>SNS 1채널 운영</li>
+          <li>콘텐츠 월 8건</li>
+          <li>월간 성과 리포트</li>
+          <li>기본 전략 수립</li>
+        </ul>
+        <a href="#contact" class="price-cta">문의하기</a>
+      </div>
+      <div class="price-card featured">
+        <span class="price-badge">가장 인기</span>
+        <p class="price-name">그로스</p>
+        <p class="price-amount">129만원<span>~ / 월</span></p>
+        <p class="price-sub">성장에 가속이 필요한 사업체</p>
+        <ul class="price-feats">
+          <li>SNS 2채널 운영</li>
+          <li>콘텐츠 월 16건</li>
+          <li>숏폼 영상 4건</li>
+          <li>성과 분석 리포트</li>
+          <li>광고 운영 컨설팅</li>
+        </ul>
+        <a href="#contact" class="price-cta">문의하기</a>
+      </div>
+      <div class="price-card">
+        <p class="price-name">프리미엄</p>
+        <p class="price-amount">240만원<span>~ / 월</span></p>
+        <p class="price-sub">전방위 운영이 필요한 브랜드</p>
+        <ul class="price-feats">
+          <li>SNS 3채널 운영</li>
+          <li>콘텐츠 협의(맞춤)</li>
+          <li>숏폼 영상 8건</li>
+          <li>전담 매니저 배정</li>
+          <li>주간 리포트</li>
+        </ul>
+        <a href="#contact" class="price-cta">문의하기</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="reviews" class="alt-bg">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="label-eyebrow">Reviews</span>
+      <h2 class="section-title">고객 후기</h2>
+    </div>
+    <p class="review-disclaimer">* 실제 적용 전 가상 예시입니다</p>
+    <div class="reviews-grid">
+      <div class="review-card">
+        <p class="review-quote">"인스타 운영을 맡기고 나서 매장 문의가 눈에 띄게 늘었어요. 바쁜 시간에 콘텐츠 걱정을 덜었습니다."</p>
+        <div class="review-who"><b>김O영 대표</b> · 카페 운영 · 외식업</div>
+      </div>
+      <div class="review-card">
+        <p class="review-quote">"리포트로 어떤 콘텐츠가 반응이 좋은지 매달 확인할 수 있어요. 광고비도 효율적으로 쓰게 됐습니다."</p>
+        <div class="review-who"><b>이O준 대표</b> · 뷰티샵 · 뷰티</div>
+      </div>
+      <div class="review-card">
+        <p class="review-quote">"혼자 하던 블로그·릴스를 체계적으로 맡기니, 본업에 집중할 수 있게 됐습니다."</p>
+        <div class="review-who"><b>박O민 대표</b> · 소품샵 · 리테일</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-grid">
+      <div>
+        <span class="label-eyebrow">Contact</span>
+        <h2 class="section-title" style="margin-bottom:14px;">지금, 서비스 문의하기</h2>
+        <p class="section-desc">업종과 현재 상황을 알려주시면, 적합한 채널과 플랜을 무료로 제안해 드립니다. 부담 없이 문의하세요.</p>
+        <div class="contact-meta">
+          <div class="contact-meta-row"><span class="k">상담시간</span><span class="v">평일 09:00–18:00</span></div>
+          <div class="contact-meta-row"><span class="k">전화</span><span class="v">추후 등록</span></div>
+          <div class="contact-meta-row"><span class="k">이메일</span><span class="v">추후 등록</span></div>
+        </div>
+      </div>
+      <div class="form-card">
+        <div class="form-row">
+          <div class="field"><label for="name">이름 / 상호</label><input id="name" type="text" placeholder="예) 김O영 / 카페OO"></div>
+          <div class="field"><label for="phone">연락처</label><input id="phone" type="tel" placeholder="010-0000-0000"></div>
+        </div>
+        <div class="field-full field">
+          <label for="biz">업종</label>
+          <select id="biz">
+            <option>외식업</option>
+            <option>뷰티</option>
+            <option>리테일</option>
+            <option>공방</option>
+            <option>학원</option>
+            <option>기타</option>
+          </select>
+        </div>
+        <div class="field-full field">
+          <label for="msg">문의 내용</label>
+          <textarea id="msg" placeholder="현재 운영 중인 채널, 고민하시는 부분을 알려주세요."></textarea>
+        </div>
+        <button type="button" class="form-submit">문의 보내기</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">JYS마케팅</div>
+        <p class="footer-desc">중소기업·소상공인의 든든한 마케팅 파트너. SNS·콘텐츠 마케팅 전문 대행.</p>
+      </div>
+      <div class="footer-col">
+        <h5>서비스</h5>
+        <ul>
+          <li>SNS 채널 운영</li>
+          <li>콘텐츠 제작</li>
+          <li>성과 리포트</li>
+          <li>맞춤 패키지</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>회사</h5>
+        <ul>
+          <li>회사 소개</li>
+          <li>차별점</li>
+          <li>요금 안내</li>
+          <li>고객 후기</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 JYS마케팅. 본 페이지는 시안이며, 컬러·로고·연락처는 추후 확정 시 교체됩니다.</span>
+      <span>대한민국 · 중소기업·소상공인 전문</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
