@@ -381,5 +381,274 @@ class Component extends DCLogic {
   }
 }
 </script>
+
+<!-- ============================================================
+     JYS마케팅 FAQ 챗봇 위젯 (순수 HTML/CSS/JS, x-dc 컴포넌트와 독립)
+     ============================================================ -->
+<style>
+  #jys-chat-toggle{
+    position:fixed; bottom:24px; right:24px; z-index:999;
+    width:58px; height:58px; border-radius:50%; border:none; cursor:pointer;
+    background:#FF7A30; box-shadow:0 16px 32px -12px rgba(255,122,48,0.55);
+    display:flex; align-items:center; justify-content:center;
+    transition:transform .15s, box-shadow .15s;
+    font-family:"Pretendard Variable",Pretendard,system-ui,sans-serif;
+  }
+  #jys-chat-toggle:hover{ transform:translateY(-2px); box-shadow:0 20px 38px -12px rgba(255,122,48,0.6); }
+  #jys-chat-toggle:active{ transform:scale(0.95); }
+  #jys-chat-toggle svg{ width:25px; height:25px; }
+  #jys-chat-dot{
+    position:absolute; top:-3px; right:-3px; width:13px; height:13px; border-radius:50%;
+    background:#1F4ED8; border:2px solid #ffffff;
+  }
+
+  #jys-chat-panel{
+    position:fixed; bottom:92px; right:24px; z-index:999;
+    width:360px; max-height:min(560px, 70vh);
+    background:#ffffff; border-radius:20px; overflow:hidden;
+    box-shadow:0 30px 60px -20px rgba(15,42,82,0.35);
+    display:flex; flex-direction:column;
+    opacity:0; transform:translateY(12px) scale(0.98); pointer-events:none;
+    transition:opacity .18s, transform .18s;
+    font-family:"Pretendard Variable",Pretendard,system-ui,sans-serif;
+  }
+  #jys-chat-panel.jys-open{ opacity:1; transform:translateY(0) scale(1); pointer-events:auto; }
+
+  #jys-chat-panel .jys-head{
+    background:#0F2A52; color:#ffffff; padding:18px 20px;
+    display:flex; align-items:center; justify-content:space-between; flex-shrink:0;
+  }
+  #jys-chat-panel .jys-head-title{ display:flex; align-items:center; gap:9px; }
+  #jys-chat-panel .jys-head-title b{ font-size:15px; font-weight:700; letter-spacing:-0.01em; }
+  #jys-chat-panel .jys-head-sub{ font-size:11.5px; color:#aebbd2; margin-top:2px; }
+  #jys-chat-panel .jys-online-dot{ width:7px; height:7px; border-radius:50%; background:#3ddc84; flex-shrink:0; }
+  #jys-chat-close{
+    background:none; border:none; color:#aebbd2; cursor:pointer; font-size:18px;
+    width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    transition:background .15s, color .15s;
+  }
+  #jys-chat-close:hover{ background:rgba(255,255,255,0.12); color:#ffffff; }
+
+  #jys-chat-messages{
+    flex:1; overflow-y:auto; padding:18px 16px 6px; background:#F4F5F7;
+    display:flex; flex-direction:column; gap:12px; min-height:180px;
+  }
+  .jys-msg{ max-width:84%; font-size:14px; line-height:1.6; white-space:pre-line; }
+  .jys-msg-bot{
+    align-self:flex-start; background:#ffffff; color:#1C1C1E;
+    border:1px solid #eceef2; border-radius:14px 14px 14px 4px; padding:11px 14px;
+  }
+  .jys-msg-user{
+    align-self:flex-end; background:#1F4ED8; color:#ffffff;
+    border-radius:14px 14px 4px 14px; padding:11px 14px;
+  }
+  .jys-msg-cta{
+    align-self:flex-start; display:inline-block; margin-top:2px;
+    background:#FF7A30; color:#ffffff; font-size:13px; font-weight:600;
+    padding:9px 16px; border-radius:999px; text-decoration:none;
+    transition:background .15s;
+  }
+  .jys-msg-cta:hover{ background:#f06a1c; }
+
+  #jys-chat-quick{
+    padding:10px 14px; display:flex; flex-wrap:wrap; gap:7px;
+    background:#F4F5F7; border-top:1px solid #eceef2; flex-shrink:0;
+  }
+  .jys-quick-btn{
+    background:#ffffff; border:1px solid #dde1e8; color:#0F2A52;
+    font-size:12.5px; font-weight:500; padding:8px 13px; border-radius:999px;
+    cursor:pointer; transition:border-color .15s, color .15s;
+    font-family:inherit;
+  }
+  .jys-quick-btn:hover{ border-color:#1F4ED8; color:#1F4ED8; }
+
+  #jys-chat-inputrow{
+    display:flex; gap:8px; padding:12px 14px; background:#ffffff;
+    border-top:1px solid #eceef2; flex-shrink:0;
+  }
+  #jys-chat-input{
+    flex:1; border:1px solid #dde1e8; border-radius:999px; padding:10px 16px;
+    font-size:13.5px; font-family:inherit; color:#1C1C1E; outline:none;
+    transition:border-color .15s;
+  }
+  #jys-chat-input:focus{ border-color:#1F4ED8; }
+  #jys-chat-send{
+    background:#0F2A52; color:#ffffff; border:none; border-radius:999px;
+    width:40px; height:40px; flex-shrink:0; cursor:pointer; display:flex;
+    align-items:center; justify-content:center; transition:background .15s;
+  }
+  #jys-chat-send:hover{ background:#173968; }
+
+  @media (max-width:480px){
+    #jys-chat-panel{ right:12px; left:12px; bottom:84px; width:auto; }
+    #jys-chat-toggle{ right:16px; bottom:16px; }
+  }
+</style>
+
+<button id="jys-chat-toggle" aria-label="JYS마케팅 상담 챗봇 열기" aria-expanded="false">
+  <span id="jys-chat-dot"></span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 1 1-4.08-7.26"/><path d="M21 11.5 12 11.5"/><circle cx="9" cy="11.5" r="1" fill="#ffffff" stroke="none"/><circle cx="14" cy="11.5" r="1" fill="#ffffff" stroke="none"/><path d="M21 3v6h-6"/></svg>
+</button>
+
+<div id="jys-chat-panel" role="dialog" aria-label="JYS마케팅 상담 챗봇" aria-hidden="true">
+  <div class="jys-head">
+    <div class="jys-head-title">
+      <div>
+        <div style="display:flex; align-items:center; gap:7px;"><span class="jys-online-dot"></span><b>JYS마케팅 상담봇</b></div>
+        <div class="jys-head-sub">평소 빠르게 답변해요</div>
+      </div>
+    </div>
+    <button id="jys-chat-close" aria-label="챗봇 닫기">✕</button>
+  </div>
+  <div id="jys-chat-messages"></div>
+  <div id="jys-chat-quick"></div>
+  <div id="jys-chat-inputrow">
+    <input id="jys-chat-input" type="text" placeholder="궁금한 점을 입력해보세요" />
+    <button id="jys-chat-send" aria-label="전송">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7Z"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var FAQ = [
+    {
+      label: "어떤 서비스를 제공하나요?",
+      keys: ["서비스","무엇","뭐해","뭘해","뭐하","제공"],
+      answer: "JYS마케팅은 4가지 핵심 서비스를 제공해요.\n\n· SNS 채널 운영 대행\n· 콘텐츠 제작 (카드뉴스·숏폼·상세페이지)\n· 성과 분석 & 전략 리포트\n· 소상공인 맞춤 패키지\n\n업종과 상황에 맞게 필요한 부분만 골라서 시작하실 수 있어요.",
+      cta: { label: "서비스 자세히 보기", href: "#services" }
+    },
+    {
+      label: "요금이 얼마예요?",
+      keys: ["요금","가격","비용","얼마","금액"],
+      answer: "플랜은 3단계로 운영하고 있어요. (부가세 별도)\n\n· 베이직 69만원~/월 — SNS 1채널 + 콘텐츠 월 8건\n· 그로스 129만원~/월 — SNS 2채널 + 콘텐츠 월 16건 (가장 많이 선택)\n· 프리미엄 240만원~/월 — SNS 3채널 + 전담 매니저\n\n업종·운영 범위에 따라 맞춤 견적을 드려요.",
+      cta: { label: "요금표 보기", href: "#pricing" }
+    },
+    {
+      label: "상담은 어떻게 신청하나요?",
+      keys: ["상담","신청","문의","연락"],
+      answer: "하단 '문의하기' 폼에 이름, 연락처, 업종, 문의 내용을 남겨주시면 영업일 기준 1일 이내에 담당자가 직접 연락드려요. 부담 없이 편하게 남겨주세요!",
+      cta: { label: "무료 상담 신청하기", href: "#contact" }
+    },
+    {
+      label: "상담 가능한 시간이 언제예요?",
+      keys: ["시간","언제","몇시","영업"],
+      answer: "상담은 평일 09:00~18:00에 가능해요. 그 외 시간에 문의를 남겨주시면 다음 영업일에 바로 연락드릴게요."
+    },
+    {
+      label: "어떤 업종도 가능한가요?",
+      keys: ["업종","분야","카페","음식점","뷰티","리테일"],
+      answer: "외식업, 뷰티, 리테일, 공방·핸드메이드, 학원·교육 등 다양한 소상공인·중소기업과 함께하고 있어요. 목록에 없는 업종이어도 편하게 문의해 주세요."
+    }
+  ];
+  var FALLBACK = "정확한 답변을 드리려면 상담을 통해 자세히 살펴보는 게 좋을 것 같아요. 아래에서 다른 질문을 골라보시거나, 무료 상담을 신청해보시겠어요?";
+
+  var panel = document.getElementById('jys-chat-panel');
+  var toggle = document.getElementById('jys-chat-toggle');
+  var dot = document.getElementById('jys-chat-dot');
+  var closeBtn = document.getElementById('jys-chat-close');
+  var messages = document.getElementById('jys-chat-messages');
+  var quick = document.getElementById('jys-chat-quick');
+  var input = document.getElementById('jys-chat-input');
+  var sendBtn = document.getElementById('jys-chat-send');
+  var opened = false;
+
+  function addMessage(text, sender){
+    var el = document.createElement('div');
+    el.className = 'jys-msg ' + (sender === 'user' ? 'jys-msg-user' : 'jys-msg-bot');
+    el.textContent = text;
+    messages.appendChild(el);
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  function addCta(cta){
+    var a = document.createElement('a');
+    a.className = 'jys-msg-cta';
+    a.href = cta.href;
+    a.textContent = cta.label;
+    a.addEventListener('click', function(){ setTimeout(closePanel, 250); });
+    messages.appendChild(a);
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  function renderQuickReplies(){
+    quick.innerHTML = '';
+    FAQ.forEach(function(item){
+      var b = document.createElement('button');
+      b.className = 'jys-quick-btn';
+      b.textContent = item.label;
+      b.addEventListener('click', function(){ respondTo(item.label); });
+      quick.appendChild(b);
+    });
+  }
+
+  function findMatch(text){
+    var lower = text.toLowerCase();
+    for (var i = 0; i < FAQ.length; i++){
+      var item = FAQ[i];
+      for (var j = 0; j < item.keys.length; j++){
+        if (lower.indexOf(item.keys[j].toLowerCase()) !== -1) return item;
+      }
+    }
+    return null;
+  }
+
+  function respondTo(text){
+    addMessage(text, 'user');
+    var match = findMatch(text);
+    setTimeout(function(){
+      if (match){
+        addMessage(match.answer, 'bot');
+        if (match.cta) addCta(match.cta);
+      } else {
+        addMessage(FALLBACK, 'bot');
+        addCta({ label: "무료 상담 신청하기", href: "#contact" });
+      }
+    }, 280);
+  }
+
+  function openPanel(){
+    panel.classList.add('jys-open');
+    panel.setAttribute('aria-hidden', 'false');
+    toggle.setAttribute('aria-expanded', 'true');
+    if (!opened){
+      opened = true;
+      dot.style.display = 'none';
+      addMessage("안녕하세요! 👋 JYS마케팅 상담봇이에요.\n아래에서 궁금한 내용을 선택하거나 직접 입력해주세요.", 'bot');
+      renderQuickReplies();
+    }
+    input.focus();
+  }
+
+  function closePanel(){
+    panel.classList.remove('jys-open');
+    panel.setAttribute('aria-hidden', 'true');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+
+  toggle.addEventListener('click', function(){
+    panel.classList.contains('jys-open') ? closePanel() : openPanel();
+  });
+  closeBtn.addEventListener('click', closePanel);
+
+  sendBtn.addEventListener('click', function(){
+    var val = input.value.trim();
+    if (!val) return;
+    respondTo(val);
+    input.value = '';
+  });
+  input.addEventListener('keydown', function(e){
+    if (e.key === 'Enter'){
+      e.preventDefault();
+      sendBtn.click();
+    }
+  });
+
+  // 페이지 로드 시 채팅창을 기본으로 열어둠
+  openPanel();
+})();
+</script>
+
 </body>
 </html>
